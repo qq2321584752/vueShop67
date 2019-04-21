@@ -3,7 +3,9 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-
+import axios from 'axios'
+axios.defaults.baseURL = 'http://127.0.0.1:11333/api/private/v1/'
+Vue.prototype.$http = axios
 // 引入饿了么 ui
 import ElementUI from 'element-ui'
 // 将 各个组件注册为 中间件(我就愿意这么叫) 因为 已经按需引入 css 了 所以 不需要再去 引入css了
