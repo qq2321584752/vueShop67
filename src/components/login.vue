@@ -37,6 +37,7 @@
 </template>
 
 <script>
+
 export default {
   data() {
     return {
@@ -53,8 +54,8 @@ export default {
                 ]
         },
       loginForm: {
-        username: '',
-        password: ''
+        username: 'admin',
+        password: '123456'
       }
     }
   },
@@ -76,8 +77,11 @@ export default {
                 return this.$message.info('用户名或者密码错误');
             }else if (dt.meta.status === 200) {
                 this.$message.success('登录成功');
-                this.$router.push('/home')
+                // 一定要先拿到 sessionStorage之后 给到路由守卫 去判断
+                // 之后 再去 改变 锚点值 不认需要在 第二次点击的 时候 才可以改变路由
                 window.sessionStorage.setItem('token',dt.data.token)
+                this.$router.push('/home')
+
             }
 
         }

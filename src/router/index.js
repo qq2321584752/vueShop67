@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
+// import HelloWorld from '@/components/HelloWorld'
 
 import login from '@/components/login'
 import home from '@/components/home_page.vue'
@@ -8,7 +8,9 @@ import '../assets/css/global.css'
 import '../assets/fonts/iconfont.css'
 Vue.use(Router)
 
-export default new Router({
+
+
+const router = new Router({
   routes: [
     {path:'/',redirect:'/login'},
     { path: '/login', component: login },
@@ -20,3 +22,15 @@ export default new Router({
     // }
   ]
 })
+
+
+router.beforeEach((to, from, next) => {
+  var token = window.sessionStorage.getItem('token')
+  // null === false
+  if (token === null && to.path != '/login') {
+    return next('/login')
+  }
+  next()
+})
+
+export default router
