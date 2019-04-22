@@ -3,7 +3,7 @@
     <h2>管理员登录系统</h2>
     <div class="login-box">
       <div class="logo-box">
-        <img src="../assets/logo.png" alt>
+        <img src="../assets/images/logo.png" alt>
       </div>
 
       <div id="login-container">

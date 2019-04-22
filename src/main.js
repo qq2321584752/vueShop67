@@ -4,7 +4,23 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import axios from 'axios'
+import './assets/css/global.css'
+import './assets/fonts/iconfont.css'
 axios.defaults.baseURL = 'http://127.0.0.1:11333/api/private/v1/'
+axios.interceptors.request.use(function (config) {
+  // Do something before request is sent
+  // 拿到 已经存在的token
+  var token = window.sessionStorage.getItem('token')
+  // config可以直接访问到 请求头信息 向里边按接口文档的要求
+  // 添加一个Authorization属性 里边是 拿到的 token 才可以拿到数据
+  config.headers.Authorization = token
+  console.log(config);
+  
+  return config;
+}, function (error) {
+  // Do something with request error
+  return Promise.reject(error);
+});
 Vue.prototype.$http = axios
 // 引入饿了么 ui
 import ElementUI from 'element-ui'
