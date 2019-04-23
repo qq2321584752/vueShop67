@@ -12,10 +12,18 @@
           <div class="nav_bar" @click="isshow">
               |||
           </div>
+          <!-- 整个ul的 背景颜色 
+          里边文字的 颜色 
+          被选中的 元素的 文字的颜色
+          只可以打开 一个 子级目录， 前提是 该目录的index 值唯一
+          控制 ul的 宽度
+          关闭 该 ul 的所有 动画效果
+          启用 路由 监听 监听在index属性里边 绑定的 路由并进行跳转
+          -->
         <el-menu
           default-active="2"
           class="el-menu-vertical-demo"
-
+          
           background-color="#333744"
           text-color="#fff"
           active-text-color="#409eff"
@@ -23,8 +31,8 @@
           :collapse='mentflag'
           :collapse-transition='false'
           :router='true'
-          
         >
+        
           <el-submenu :index="item.id+''" v-for="(item,k) in mentlist" :key="item.id" style="width:200px">
             <template slot="title">
               <i :class="'iconfont icon-'+icon[k]"></i>

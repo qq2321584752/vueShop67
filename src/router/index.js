@@ -14,11 +14,13 @@ const router = new Router({
   routes: [
     { path: '/', redirect: '/login' },
     { path: '/login', component: login },
-    { path: '/home', component: home,redirect:'/welcome', children:[
-      { path: '/welcome', component: welcome},
-      { path: '/users', component: users }
+    {
+      path: '/home', component: home, redirect: '/welcome', children: [
+        { path: '/welcome', component: welcome },
+        { path: '/users', component: users }
 
-    ] },
+      ]
+    },
     // {
     //   path: '/',
     //   name: 'HelloWorld',
