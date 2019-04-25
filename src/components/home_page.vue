@@ -89,7 +89,6 @@ export default {
         },
         async list(){
         var {data:dt} = await this.$http.get('/menus')
-        console.log(dt);
             this.mentlist = dt.data
         },
         retreat(){

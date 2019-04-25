@@ -14,7 +14,6 @@ axios.interceptors.request.use(function (config) {
   // config可以直接访问到 请求头信息 向里边按接口文档的要求
   // 添加一个Authorization属性 里边是 拿到的 token 才可以拿到数据
   config.headers.Authorization = token
-  console.log(config);
   
   return config;
 }, function (error) {
