@@ -1,11 +1,11 @@
 <template>
   <div>
-    <el-breadcrumb separator-class="el-icon-arrow-right">
+    <!-- <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>用户管理</el-breadcrumb-item>
       <el-breadcrumb-item>用户列表</el-breadcrumb-item>
-    </el-breadcrumb>
-
+    </el-breadcrumb>-->
+    <crumb nm="用户"></crumb>
     <el-card class="box-card">
       <!-- 添加用户弹出层 =========================================================-->
       <el-dialog title="添加用户" :visible.sync="add_userdialog" width="50%" @close="addDialogClose">
@@ -69,8 +69,14 @@
       </el-dialog>
 
       <!-- 分配角色弹出层 ======================================-->
-      <el-dialog @close='assignDialogClose' title="用户分配角色" :visible.sync="Assign_users" width="50%">
-        <el-form label-position ref="assign_form1" :model="assign_form" label-width="85px">
+      <el-dialog @close="assignDialogClose" title="用户分配角色" :visible.sync="Assign_users" width="50%">
+        <el-form
+          :rules="setrolerules"
+          label-position
+          ref="assign_form1"
+          :model="assign_form"
+          label-width="100px"
+        >
           <el-form-item label="当前的用户">
             <span v-text="assign_form.username"></span>
           </el-form-item>
@@ -78,9 +84,15 @@
             <span v-text="assign_form.role_name"></span>
           </el-form-item>
 
-          <el-form-item label="分配新角色">
-            <el-select v-model="assign_form.region" placeholder="请选择活动区域">
-              <el-option placeholder='请选择' v-for="item in assign_region" :key="item.id" :value="item.roleName"></el-option>
+          <el-form-item label="分配新角色" prop="rid">
+            <el-select v-model="assign_form.rid" placeholder="请选择活动区域">
+              <el-option
+                placeholder="请选择"
+                v-for="item in assign_region"
+                :key="item.id"
+                :value="item.id"
+                :label="item.roleName"
+              ></el-option>
               <!-- <el-option label="区域二" value="beijing"></el-option> -->
             </el-select>
           </el-form-item>
@@ -121,6 +133,7 @@
             v-model="info.row.mg_state"
             active-color="#13ce66"
             inactive-color="#ff4949"
+            @change='user_status(info.row.id,info.row.mg_state)'
           ></el-switch>
           <!-- <span slot-scope="info">{{ info.row }}</span> -->
         </el-table-column>
@@ -185,7 +198,7 @@ export default {
       // 所有用户数据列表
       userList: [],
       // 角色种类
-      assign_region:[],
+      assign_region: [],
 
       querycdt: {
         query: '', // 搜索关键字
@@ -212,10 +225,9 @@ export default {
         id: 0
       },
       assign_form: {
-        username: '',
-        role_name: '',
-        region:''
+        assign_reast: ''
       },
+      assign_region2: '',
 
       // 表单验证的规则
       addFormRules: {
@@ -226,6 +238,12 @@ export default {
           { required: true, message: '手机号码必填', trigger: 'blur' },
           { validator: checkMobile, trigger: 'blur' } //第一种自定义验证方法
           // {}
+        ]
+      },
+      // 分配角色验证规则
+      setrolerules:{
+       rid: [
+          {required:true,message:'请选择一个角色',trigger:'change'}
         ]
       }
     }
@@ -274,13 +292,15 @@ export default {
     addDialogClose() {
       // 谁执行这个方法 都会通过refs 拿到 该表单对象 然后调用方法 清空表单
       this.$refs.addFormRef.resetFields()
-      
     },
     // 关闭分配角色弹出层
     assignDialogClose() {
       // 谁执行这个方法 都会通过refs 拿到 该表单对象 然后调用方法 清空表单
-      
+
       this.$refs.assign_form1.resetFields()
+      console.log(this.assign_form)
+
+      console.log(this.$refs.assign_form1)
     },
     // 点击添加 用户的方法
     addUser() {
@@ -377,32 +397,53 @@ export default {
     },
     // 分配角色弹出层显示
     async Assign_role(row) {
-      var { data: dt } = await this.$http.get('/users/' + row.id)
-      var { data: dt1 } = await this.$http.get('/roles')
-      this.assign_region = dt1.data
-      // console.log(this.assign_region)
+      // 拿到 所有 角色 名称
+      var { data: dt } = await this.$http.get('/roles')
+      // 那他到 data里边 select需要 循环的 数据
+      this.assign_region = dt.data
       // console.log(dt);
-      
-       this.assign_form = dt.data
-       console.log(this.assign_form);
-       
-      this.assign_form.role_name = row.role_name
+      // 弹出框 一弹出 的时候 就自带显示 现角色名称和 用户名
+      this.assign_form = row
+      // 开启弹出框
       this.Assign_users = true
     },
-     async assign_ok(){
+    // 提交分配角色的结果
+    assign_ok() {
+      // 拿到 当前 获得的 用户信息里边的id值
       var id = this.assign_form.id
-      // console.log(id);
-     var roleName = this.assign_form.region
-    //  console.log(roleName);
-     
-       var {data:dt} = await this.$http.put('/roles/'+id,{roleName:this.assign_form.region})
-
+      //! 判断 表单验证 注意async 的位置 很重要！必须要在 vali 为true的 情况下操作
+      this.$refs.assign_form1.validate(async vali => {
+        if (vali) {
+          // 用户id值 放在路由里边
+      // 角色id 通过参数rid 传过去
+      var { data: dt } = await this.$http.put('/users/' + id + '/role', {
+        rid: this.assign_form.rid
+      })
+      this.$message.success(dt.meta.msg)
+      // 重新拉去 用户最新数据
+      this.getuserlist()
+      // 清空 表单
+      this.assignDialogClose()
+      // 关闭弹出层
+      this.Assign_users = false
+        }
+        console.log(vali);
+        
+      })
+      
+    },
+    // 改变用户 状态
+    async user_status(id,mg_state){
+      const {data:dt} = await this.$http.put(`users/${id}/state/${mg_state}`)
+      if (dt.meta.status !== 200) {
+        return this.$message.error(dt.meta.msg)
+        
+      }
+      this.$message.success(dt.meta.msg)
       // console.log(dt);
       
+      // console.log(id,mg_state);
       
-
-      this.Assign_users = false
-
     }
   }
 }

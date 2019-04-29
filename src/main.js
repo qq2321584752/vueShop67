@@ -6,6 +6,10 @@ import router from './router'
 import axios from 'axios'
 import './assets/css/global.css'
 import './assets/fonts/iconfont.css'
+// 共享面包屑导航升级 ，引入在都会有的main.js当中
+import crumb from './components/share/crumb.vue'
+// 注册为 全局组件
+Vue.component('crumb',crumb)
 axios.defaults.baseURL = 'http://127.0.0.1:11333/api/private/v1/'
 axios.interceptors.request.use(function (config) {
   // Do something before request is sent
