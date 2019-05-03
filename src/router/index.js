@@ -9,6 +9,10 @@ import welcome from '@/components/welcome.vue';
 import rights from '@/components/rights.vue'
 import roles from '@/components/roles.vue'
 import categories from '@/components/categories.vue'
+import params from '@/components/param.vue'
+import goods from '@/components/goods.vue'
+import GoodsAdd from '@/components/GoodsAdd.vue'
+import orders from '@/components/orders.vue'
 Vue.use(Router)
 
 
@@ -23,7 +27,11 @@ const router = new Router({
         { path: '/users', component: users },
         { path: '/rights', component: rights },
         { path: '/roles', component: roles },
-        { path:'/categories',component:categories}
+        { path:'/categories',component:categories},
+        { path: '/params', component: params },
+        { path: '/goods', component: goods },
+        { path: '/GoodsAdd', component: GoodsAdd},
+        { path: '/orders', component: orders}
       ]
     },
     // {

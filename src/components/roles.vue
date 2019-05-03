@@ -1,6 +1,7 @@
 <template>
   <div>
-    <crumb nm="权限"></crumb>
+    <crumb nm="权限管理" lb='权限管理'></crumb>
+
 
     <el-card class="box-card">
       <el-dialog title="分配权限" :visible.sync="distributeDialog" width="50%">

@@ -5,7 +5,8 @@
       <el-breadcrumb-item>权限管理</el-breadcrumb-item>
       <el-breadcrumb-item>权限列表</el-breadcrumb-item>
     </el-breadcrumb> -->
-        <crumb nm='权限'></crumb>
+    <crumb nm="权限管理" lb='权限管理'></crumb>
+
     <el-card class="box-card">
       <el-table :data="rightslist" border style="width: 100%">
         <el-table-column type="index" label="序号" width="160"></el-table-column>

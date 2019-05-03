@@ -6,8 +6,18 @@ import router from './router'
 import axios from 'axios'
 import './assets/css/global.css'
 import './assets/fonts/iconfont.css'
+import VueQuillEditor  from 'vue-quill-editor'
+// import 'quill/dist/quill.core.css'
+// import 'quill/dist/quill.snow.css'
+// import 'quill/dist/quill.bubble.css'
+// Vue.use(VueQuillEditor)
+// 时间处理包
+import moment from 'moment'
 // 共享面包屑导航升级 ，引入在都会有的main.js当中
 import crumb from './components/share/crumb.vue'
+Vue.filter('fromat',(time)=>{
+  return moment(time).format('YYYY-MM-DD')
+})
 // 注册为 全局组件
 Vue.component('crumb',crumb)
 axios.defaults.baseURL = 'http://127.0.0.1:11333/api/private/v1/'

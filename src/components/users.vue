@@ -5,7 +5,8 @@
       <el-breadcrumb-item>用户管理</el-breadcrumb-item>
       <el-breadcrumb-item>用户列表</el-breadcrumb-item>
     </el-breadcrumb>-->
-    <crumb nm="用户"></crumb>
+    <crumb nm="用户管理" lb='用户管理'></crumb>
+
     <el-card class="box-card">
       <!-- 添加用户弹出层 =========================================================-->
       <el-dialog title="添加用户" :visible.sync="add_userdialog" width="50%" @close="addDialogClose">
@@ -102,7 +103,7 @@
           <el-button type="primary" @click="assign_ok">确 定</el-button>
         </span>
       </el-dialog>
-
+      
       <el-row :gutter="20">
         <el-col :span="8">
           <el-input
