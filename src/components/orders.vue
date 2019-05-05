@@ -47,6 +47,7 @@
         <el-table-column prop="is_send" label="是否发货"></el-table-column>
         <el-table-column label="下单时间">{{ orders_List.update_time | fromat }}</el-table-column>
 
+
         <el-table-column label="操作">
           <template slot-scope="info1">
             <el-button type="primary" size="mini" icon="el-icon-edit"></el-button>
